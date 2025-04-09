@@ -1,4 +1,7 @@
+#pragma once
+
+#include "game.hpp"
 #include <fstream>
 
-void salva();
-void carica();
+bool saveCity(const string &path, City city);
+bool loadCity(const string &path, City &city);

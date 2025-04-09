@@ -1,8 +1,11 @@
+// Includi questo file solo una volta
+#pragma once
+
 #include <string>
 
 using namespace std;
 
-struct Citta {
+struct City {
     string nome;
     int popolazione;
     int buget;
