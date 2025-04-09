@@ -18,7 +18,7 @@ A terminal-based city simulation game written in C++.
 - C++ compiler
 
 ## License
-Bruh just do what you want there's no license (ok if you really care it's the MIT License, which basically means the same)
+MIT License, which basically means "do what you want but if your pc catches on fire it's not my problem".
 
 ---
 
