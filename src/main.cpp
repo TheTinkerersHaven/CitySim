@@ -23,7 +23,7 @@ int main() {
 
     cout << "Città: " << citta.nome << endl;
     cout << "Popolazione: " << citta.popolazione << endl;
-    cout << "Budget: " << citta.buget << endl;
+    cout << "Budget: " << citta.budget << endl;
     cout << "Data: " << citta.data << endl;
 
     if (!saveCity("citta.txt", citta)) {

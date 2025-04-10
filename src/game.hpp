@@ -8,7 +8,7 @@ using namespace std;
 struct City {
     string nome;
     int popolazione;
-    int buget;
+    int budget;
     // TODO: int o struct a parte?
     int data;
 };

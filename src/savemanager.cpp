@@ -10,7 +10,7 @@ bool saveCity(const string &path, City city) {
 
     file << city.nome << endl;
     file << city.popolazione << endl;
-    file << city.buget << endl;
+    file << city.budget << endl;
     file << city.data << endl;
 
     file.close();
@@ -26,7 +26,7 @@ bool loadCity(const string &path, City &city) {
 
     getline(file, city.nome);
     file >> city.popolazione;
-    file >> city.buget;
+    file >> city.budget;
     file >> city.data;
 
     file.close();
