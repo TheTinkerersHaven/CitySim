@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "savemanager.hpp"
+#include <cstdlib>
 #include <iostream>
 
 using namespace std;
@@ -7,18 +8,13 @@ using namespace std;
 int main() {
     City citta;
 
+    srand((unsigned int)time(NULL));
+
     // NOTE: This uses the cmake output folder for the save file, so if you don't find the file, keep that in mind.
-    // Sample data for testing:
-    /*
-        Roma
-        2873000
-        1000000
-        2023
-    */
 
     if (!loadCity("citta.txt", citta)) {
-        cerr << "Impossibile caricare la citta" << endl;
-        return 1;
+        cerr << "Impossibile caricare la citta. Generando una nuova citta." << endl;
+        citta = createNewCity();
     }
 
     cout << "Città: " << citta.nome << endl;
@@ -30,4 +26,6 @@ int main() {
         cerr << "Impossibile salvare la citta" << endl;
         return 1;
     }
+
+    return 0;
 }

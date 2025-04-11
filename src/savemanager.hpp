@@ -5,3 +5,5 @@
 
 bool saveCity(const string &path, City city);
 bool loadCity(const string &path, City &city);
+
+City createNewCity();
