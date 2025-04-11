@@ -5,10 +5,15 @@
 
 using namespace std;
 
+struct Time {
+    int week;
+    int month;
+    int year;
+};
+
 struct City {
-    string nome;
-    int popolazione;
+    string name;
+    int population;
     int budget;
-    // TODO: int o struct a parte?
-    int data;
+    Time time;
 };

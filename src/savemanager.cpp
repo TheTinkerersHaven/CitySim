@@ -7,9 +7,8 @@ const int MAX_NAME_LENGTH = 50;
 const int GEN_POPULATION_MIN = 1000;
 const int GEN_POPULATION_MAX = 2000;
 
-// The ' is only syntax, it doesn't do anything beside making this a bit easier to read
-const int GEN_BUDGETN_MIN = 50'000;
-const int GEN_BUDGETN_MAX = 100'000;
+const int GEN_BUDGET_MIN = 50;
+const int GEN_BUDGET_MAX = 100;
 
 bool saveCity(const string &path, City city) {
     ofstream file(path);
@@ -18,10 +17,12 @@ bool saveCity(const string &path, City city) {
         return false;
     }
 
-    file << city.nome << endl;
-    file << city.popolazione << endl;
+    file << city.name << endl;
+    file << city.population << endl;
     file << city.budget << endl;
-    file << city.data << endl;
+    file << city.time.year << endl;
+    file << city.time.month << endl;
+    file << city.time.week << endl;
 
     file.close();
     return true;
@@ -34,10 +35,12 @@ bool loadCity(const string &path, City &city) {
         return false;
     }
 
-    getline(file, city.nome);
-    file >> city.popolazione;
+    getline(file, city.name);
+    file >> city.population;
     file >> city.budget;
-    file >> city.data;
+    file >> city.time.year;
+    file >> city.time.month;
+    file >> city.time.week;
 
     file.close();
 
@@ -67,19 +70,21 @@ City createNewCity() {
 
     do {
         cout << "Inserisci il nome della città: ";
-        getline(cin, city.nome);
+        getline(cin, city.name);
 
         // Check if the name is valid
-        if (!isValidName(city.nome)) {
+        if (!isValidName(city.name)) {
             cout << "Nome non valido. Riprova." << endl;
         }
-    } while (!isValidName(city.nome));
+    } while (!isValidName(city.name));
 
-    // TODO: This will need to change as the time will need to work in weeks, however for now it stores years
-    city.data = 2025;
+    city.time.week = 0;
+    city.time.month = 0;
+    // TODO: Get current year?
+    city.time.year = 2025;
 
-    city.popolazione = randomNumber(GEN_POPULATION_MIN, GEN_POPULATION_MAX);
-    city.budget = randomNumber(GEN_BUDGETN_MIN, GEN_BUDGETN_MAX);
+    city.population = randomNumber(GEN_POPULATION_MIN, GEN_POPULATION_MAX);
+    city.budget = randomNumber(GEN_BUDGET_MIN, GEN_BUDGET_MAX) * 1000;
 
     return city;
 }

@@ -17,10 +17,10 @@ int main() {
         citta = createNewCity();
     }
 
-    cout << "Città: " << citta.nome << endl;
-    cout << "Popolazione: " << citta.popolazione << endl;
+    cout << "Città: " << citta.name << endl;
+    cout << "Popolazione: " << citta.population << endl;
     cout << "Budget: " << citta.budget << endl;
-    cout << "Data: " << citta.data << endl;
+    cout << "Data: " << citta.time.week << " settimana del mese " << citta.time.month << " dell'anno " << citta.time.year << endl;
 
     if (!saveCity("citta.txt", citta)) {
         cerr << "Impossibile salvare la citta" << endl;
