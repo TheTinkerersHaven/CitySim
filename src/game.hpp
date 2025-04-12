@@ -14,6 +14,7 @@ struct Time {
 struct City {
     string name;
     int population;
+    int mood;
     int budget;
     Time time;
 };

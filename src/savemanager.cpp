@@ -1,3 +1,4 @@
+#include "game.hpp"
 #include "savemanager.hpp"
 #include "utils.hpp"
 #include <iostream>
@@ -13,12 +14,11 @@ const int GEN_BUDGET_MAX = 100;
 bool saveCity(const string &path, City city) {
     ofstream file(path);
 
-    if (!file) {
-        return false;
-    }
+    if (!file) return false;
 
     file << city.name << endl;
     file << city.population << endl;
+    file << city.mood << endl;
     file << city.budget << endl;
     file << city.time.year << endl;
     file << city.time.month << endl;
@@ -29,14 +29,13 @@ bool saveCity(const string &path, City city) {
 }
 
 bool loadCity(const string &path, City &city) {
-    ifstream file(path);
+    ifstream file(path);    // Dichiara "file" e ci inserisce il percorso del file
 
-    if (!file) {
-        return false;
-    }
-
+    if (!file) return false;    // Se il file non esiste, dai errore
+        
     getline(file, city.name);
     file >> city.population;
+    file >> city.mood;
     file >> city.budget;
     file >> city.time.year;
     file >> city.time.month;
@@ -49,17 +48,11 @@ bool loadCity(const string &path, City &city) {
 
 bool isValidName(const string &name) {
     // Check to see if the name is too long
-    if (name.length() > MAX_NAME_LENGTH) {
-        return false;
-    }
+    if (name.length() > MAX_NAME_LENGTH) return false;
 
     // Check if there are invalid characters found (we only want letters and spaces for now)
     for (int i = 0; i < name.length(); i++) {
-        char c = name[i];
-
-        if (!isalpha(c) && c != ' ') {
-            return false;
-        }
+        if (!isalpha(name[i]) && name[i] != ' ') return false;
     }
 
     return true;
@@ -69,19 +62,18 @@ City createNewCity() {
     City city;
 
     do {
-        cout << "Inserisci il nome della città: ";
+        cout << "Inserisci il nome della citta': ";
         getline(cin, city.name);
 
         // Check if the name is valid
-        if (!isValidName(city.name)) {
-            cout << "Nome non valido. Riprova." << endl;
-        }
+        if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
+
     } while (!isValidName(city.name));
 
     city.time.week = 0;
     city.time.month = 0;
-    // TODO: Get current year?
-    city.time.year = 2025;
+    city.time.year = 2025;  // TODO: Get current year
+    city.mood = 100;
 
     city.population = randomNumber(GEN_POPULATION_MIN, GEN_POPULATION_MAX);
     city.budget = randomNumber(GEN_BUDGET_MIN, GEN_BUDGET_MAX) * 1000;
