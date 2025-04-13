@@ -47,10 +47,10 @@ bool loadCity(const string &path, City &city) {
 }
 
 bool isValidName(const string &name) {
-    // Check to see if the name is too long
+    // Controlla se il nome è troppo lungo
     if (name.length() > MAX_NAME_LENGTH) return false;
 
-    // Check if there are invalid characters found (we only want letters and spaces for now)
+    // Controlla che ci siano solo caratteri validi (per ora solo lettere e spazi)
     for (int i = 0; i < name.length(); i++) {
         if (!isalpha(name[i]) && name[i] != ' ') return false;
     }
@@ -64,17 +64,16 @@ City createNewCity() {
     do {
         cout << "Inserisci il nome della citta': ";
         getline(cin, city.name);
-
-        // Check if the name is valid
         if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
-
     } while (!isValidName(city.name));
 
+    // Imposta la data a zero
     city.time.week = 0;
     city.time.month = 0;
-    city.time.year = 2025;  // TODO: Get current year
+    city.time.year = 2025;  // TODO: Prendere l'anno corrente (forse? può essere un'idea carina)
     city.mood = 100;
 
+    // Genera casualmente la popolazione e il budget
     city.population = randomNumber(GEN_POPULATION_MIN, GEN_POPULATION_MAX);
     city.budget = randomNumber(GEN_BUDGET_MIN, GEN_BUDGET_MAX) * 1000;
 

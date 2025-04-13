@@ -1,5 +1,5 @@
-#include "game.hpp" // Non sarebbe necessario, dato che è già incluso in savemanager.hpp, ma lo mettiamo per chiarezza
-#include "savemanager.hpp"
+#include "includes/game.hpp" // Non sarebbe necessario (già incluso in savemanager.hpp) ma lo mettiamo per chiarezza
+#include "includes/savemanager.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -11,13 +11,13 @@ int main() {
     City citta;
     srand((unsigned int)time(NULL));
 
-    // NOTE: This uses the cmake output folder for the save file, so if you don't find the file, keep that in mind.
+    // NOTA: Questo utilizza la cartella di output di cmake per il file di salvataggio
     if (!loadCity("citta.txt", citta)) {
         cerr << "ERRORE: Impossibile caricare la citta'. Generando una nuova citta'." << endl;
         citta = createNewCity();
     }
 
-    // DEBUG
+    // DEBUG - DA SOSTITUIRE CON MENU
     stampaInfo(citta);
 
     if (!saveCity("citta.txt", citta)) {
@@ -26,12 +26,4 @@ int main() {
     }
 
     return 0;
-}
-
-void stampaInfo(City citta){
-    cout << "SETTIMANA " << citta.time.week << " - MESE " << citta.time.month << " - ANNO " << citta.time.year << endl;
-    cout << "Citta': " << citta.name << endl;
-    cout << "Popolazione: " << citta.population << endl;
-    cout << "Felicita': " << citta.mood << endl;
-    cout << "Budget: " << citta.budget << endl;
 }
