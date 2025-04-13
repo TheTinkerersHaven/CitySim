@@ -2,7 +2,7 @@
 Un gioco di simulazione cittadina basato su terminale, scritto in C++.
 
 ## Funzionalità
-- [ ] Salvataggio/caricamento della città
+- Salvataggio/caricamento della città
 
 ### Funzionalità pianificate
 - [ ] Simulazione dei cittadini (crescita della popolazione)
