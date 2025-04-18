@@ -67,9 +67,9 @@ City createNewCity() {
         if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
     } while (!isValidName(city.name));
 
-    // Imposta la data a zero
-    city.time.week = 0;
-    city.time.month = 0;
+    // Imposta la data iniziale
+    city.time.week = 1;
+    city.time.month = 1;
     city.time.year = 2025;  // TODO: Prendere l'anno corrente (forse? può essere un'idea carina)
     city.mood = 100;
 
