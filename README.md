@@ -1,25 +1,26 @@
 # 🏙️ CitySim 🏙️
-A terminal-based city simulation game written in C++.
+Un gioco di simulazione cittadina basato su terminale, scritto in C++.
 
-## Features
+## Funzionalità
+- Salvataggio/caricamento della città
 
-### Planned Features
-- [ ] Citizen simulation (population growth)
-- [ ] Economy and budget management
-- [ ] City infrastructure management
+### Funzionalità pianificate
+- [ ] Simulazione dei cittadini (crescita della popolazione)
+- [ ] Gestione dell'economia e del budget
+- [ ] Gestione delle infrastrutture cittadine
 
-### Possible future features
-- [ ] Disaster events (fires, earthquakes)
-- [ ] Save/load game functionality
+### Possibili funzionalità future
+- [ ] Eventi catastrofici (incendi, terremoti)
+- [ ] Slot di salvataggio multipli
 
-## Installation
+## Installazione
 
-### Prerequisites
-- C++ compiler
+### Prerequisiti
+*TODO*
 
-## License
-MIT License, which basically means "do what you want but if your pc catches on fire it's not my problem".
+## Licenza
+Licenza MIT, che in pratica significa "fai quello che vuoi ma se il tuo PC prende fuoco sono affari tuoi".
 
 ---
 
-Made with ❤️ by @TheTinkerersHaven and @Fleny113 (for school, yay)
+Creato con ❤️ da @TheTinkerersHaven e @Fleny113 (per la scuola, evviva)
