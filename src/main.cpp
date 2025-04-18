@@ -47,7 +47,7 @@ void menu(City citta) {
             case 2:
                 break; // TODO
             case 3:
-                addWeek(citta.time);
+                simulate(citta);
                 break;
             case 4:
                 if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;
