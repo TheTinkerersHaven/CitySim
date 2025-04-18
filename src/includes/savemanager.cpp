@@ -1,5 +1,5 @@
-#include "game.hpp"
 #include "savemanager.hpp"
+#include "game.hpp"
 #include "utils.hpp"
 #include <iostream>
 
@@ -29,10 +29,10 @@ bool saveCity(const string &path, City city) {
 }
 
 bool loadCity(const string &path, City &city) {
-    ifstream file(path);    // Dichiara "file" e ci inserisce il percorso del file
+    ifstream file(path); // Dichiara "file" e ci inserisce il percorso del file
 
-    if (!file) return false;    // Se il file non esiste, dai errore
-        
+    if (!file) return false; // Se il file non esiste, dai errore
+
     getline(file, city.name);
     file >> city.population;
     file >> city.mood;
@@ -70,7 +70,7 @@ City createNewCity() {
     // Imposta la data iniziale
     city.time.week = 1;
     city.time.month = 1;
-    city.time.year = 2025;  // TODO: Prendere l'anno corrente (forse? può essere un'idea carina)
+    city.time.year = 2025; // TODO: Prendere l'anno corrente (forse? può essere un'idea carina)
     city.mood = 100;
 
     // Genera casualmente la popolazione e il budget
