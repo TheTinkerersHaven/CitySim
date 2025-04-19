@@ -26,7 +26,9 @@ int main() {
 }
 
 void menu(City citta) {
-    int scelta = 0, salva = 0;
+    int scelta = 0;
+    int risultatoSimulazione = 0;
+
     do {
         cout << "1) Stampa informazioni citta'" << endl;
         cout << "2) Stampa condizioni servizi" << endl;
@@ -47,7 +49,25 @@ void menu(City citta) {
             case 2:
                 break; // TODO
             case 3:
-                simulate(citta);
+                risultatoSimulazione = simulate(citta);
+
+                // Stampa un messaggio se la città è fallita
+                switch (risultatoSimulazione) {
+                    case SIM_FINE_BUDGET:
+                        cout << "Budget insufficiente. La citta' e' fallita." << endl;
+                        break;
+                    case SIM_FINE_POP:
+                        cout << "Popolazione insufficiente. La citta' e' fallita." << endl;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Se la città è fallita, esci dal menu
+                if (risultatoSimulazione < 0) {
+                    return;
+                }
+
                 break;
             case 4:
                 if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;

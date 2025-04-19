@@ -1,14 +1,29 @@
 #include "simulation.hpp"
 
-void simulate(City &city) {
+int simulate(City &city) {
     // TODO: Simula i servizi della citta
+    //  - Controllo se sono presenti
+    //    - Controllo manutenzione
+    //    - Controllo rischio
 
     // TODO: Simula la popolazione della citta
+    //  - Controllo crescita
 
-    // TODO: Simula il budget della citta
+    if (city.population <= 0) {
+        return SIM_FINE_POP;
+    }
+
+    // Ogni cittadino paga .20$ alla settimana
+    city.budget += int(city.population * 0.20);
+
+    if (city.budget < 0) {
+        return SIM_FINE_BUDGET;
+    }
 
     // Incrementa il tempo
     addWeek(city.time);
+
+    return SIM_OK;
 }
 
 void addWeek(Time &time) {
