@@ -24,6 +24,13 @@ bool saveCity(const string &path, City city) {
     file << city.time.month << endl;
     file << city.time.week << endl;
 
+    file << city.servicesCount << endl;
+
+    for (int i = 0; i < city.servicesCount; i++) {
+        file << city.services[i]->type << endl;
+        file << city.services[i]->manutenzione << endl;
+    }
+
     file.close();
     return true;
 }
@@ -40,6 +47,19 @@ bool loadCity(const string &path, City &city) {
     file >> city.time.year;
     file >> city.time.month;
     file >> city.time.week;
+
+    for (int i = 0; i < MAX_SERVICES; i++) {
+        city.services[i] = nullptr;
+    }
+
+    int serviziPresenti = 0;
+    file >> serviziPresenti;
+
+    for (int i = 0; i < serviziPresenti; i++) {
+        city.services[i] = new Service;
+        file >> city.services[i]->type;
+        file >> city.services[i]->manutenzione;
+    }
 
     file.close();
 
@@ -76,6 +96,11 @@ City createNewCity() {
     // Genera casualmente la popolazione e il budget
     city.population = randomNumber(GEN_POPULATION_MIN, GEN_POPULATION_MAX);
     city.budget = randomNumber(GEN_BUDGET_MIN, GEN_BUDGET_MAX) * 1000;
+
+    city.servicesCount = 0;
+    for (int i = 0; i < MAX_SERVICES; i++) {
+        city.services[i] = nullptr;
+    }
 
     return city;
 }

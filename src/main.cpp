@@ -33,14 +33,15 @@ void menu(City citta) {
         cout << "1) Stampa informazioni citta'" << endl;
         cout << "2) Stampa condizioni servizi" << endl;
         cout << "3) Vai avanti di una settimana" << endl;
-        cout << "4) Salva i progressi e continua" << endl;
+        cout << "4) Aggiungi un servizio" << endl;
+        cout << "5) Salva i progressi e continua" << endl;
         cout << "0) Esci dal gioco senza salvare" << endl;
 
         do {
             cout << "Scegli un'azione: ";
             cin >> scelta;
-            if (scelta < 0 || scelta > 4) cout << "Inserimento errato. Riprova." << endl;
-        } while (scelta < 0 || scelta > 4);
+            if (scelta < 0 || scelta > 5) cout << "Inserimento errato. Riprova." << endl;
+        } while (scelta < 0 || scelta > 5);
 
         cout << endl << endl;
 
@@ -49,7 +50,31 @@ void menu(City citta) {
                 stampaInfoCitta(citta);
                 break;
             case 2:
-                break; // TODO
+                // TODO: Questo assume che i servizi sono stati creati in ordine
+                // O "sortiamo" i servizi quando li creiamo oppure dobbiamo fare un search ogni volta
+
+                cout << "Servizio Elettrico: ";
+                if (citta.services[0] != nullptr) {
+                    cout << "Manutenzione " << citta.services[0]->manutenzione * 100 << "%" << endl;
+                } else {
+                    cout << "Non presente" << endl;
+                }
+
+                cout << "Servizio Idrico: ";
+                if (citta.services[1] != nullptr) {
+                    cout << "Manutenzione " << citta.services[1]->manutenzione * 100 << "%" << endl;
+                } else {
+                    cout << "Non presente" << endl;
+                }
+
+                cout << "Servizio dei Rifiuti: ";
+                if (citta.services[2] != nullptr) {
+                    cout << "Manutenzione " << citta.services[2]->manutenzione * 100 << "%" << endl;
+                } else {
+                    cout << "Non presente" << endl;
+                }
+
+                break;
             case 3:
                 risultatoSimulazione = simulate(citta);
 
@@ -72,6 +97,13 @@ void menu(City citta) {
 
                 break;
             case 4:
+                // TODO: Aggiungi un servizio
+
+                // 1) Chiedi il tipo di servizio
+                // 2) Crea il servizio nella citta ad un costo
+
+                break;
+            case 5:
                 if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;
                 else cerr << "ERRORE: Salvataggio fallito. Controlla che il file sia disponibile e riprova." << endl;
                 break;

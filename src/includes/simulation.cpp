@@ -1,10 +1,18 @@
 #include "simulation.hpp"
+#include "utils.hpp"
 
 int simulate(City &city) {
-    // TODO: Simula i servizi della citta
-    //  - Controllo se sono presenti
-    //    - Controllo manutenzione
-    //    - Controllo rischio
+    for (int i = 0; i < MAX_SERVICES; i++) {
+        if (city.services[i] == nullptr) {
+            // Se il servizio non è presente, riduci la felicità
+            city.mood -= 1;
+            continue;
+        }
+
+        city.services[i]->manutenzione -= 0.01; // Riduci la manutenzione del servizio dell' 1%
+
+        // TODO: Rischio
+    }
 
     // TODO: Simula la popolazione della citta
     //  - Controllo crescita
