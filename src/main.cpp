@@ -51,7 +51,7 @@ void menu(City citta) {
                 break;
             case 2:
                 // TODO: Questo assume che i servizi sono stati creati in ordine
-                // O "sortiamo" i servizi quando li creiamo oppure dobbiamo fare un search ogni volta
+                // Quindi bisogna fare una ricerca per il servizio che stiamo cercando
 
                 cout << "Servizio Elettrico: ";
                 if (citta.services[0] != nullptr) {
