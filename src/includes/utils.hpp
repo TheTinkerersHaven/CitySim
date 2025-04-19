@@ -3,4 +3,4 @@
 #include "game.hpp"
 
 int randomNumber(int min, int max);
-void stampaInfo(City citta);
+void stampaInfoCitta(City citta);

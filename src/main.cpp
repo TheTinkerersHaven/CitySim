@@ -42,7 +42,7 @@ void menu(City citta) {
 
         switch (scelta) {
             case 1:
-                stampaInfo(citta);
+                stampaInfoCitta(citta);
                 break;
             case 2:
                 break; // TODO

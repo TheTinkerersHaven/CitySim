@@ -1,3 +1,5 @@
+#pragma once
+
 #include "game.hpp"
 
 void simulate(City &city);
