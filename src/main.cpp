@@ -39,8 +39,10 @@ void menu(City citta) {
         do {
             cout << "Scegli un'azione: ";
             cin >> scelta;
-            if (scelta < 0 || scelta > 5) cout << "Inserimento errato. Riprova.";
-        } while (scelta < 0 || scelta > 5);
+            if (scelta < 0 || scelta > 4) cout << "Inserimento errato. Riprova." << endl;
+        } while (scelta < 0 || scelta > 4);
+
+        cout << endl << endl;
 
         switch (scelta) {
             case 1:
@@ -76,5 +78,7 @@ void menu(City citta) {
             default:
                 break;
         }
+
+        cout << endl << endl;
     } while (scelta != 0);
 }
