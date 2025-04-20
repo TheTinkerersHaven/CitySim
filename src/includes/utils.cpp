@@ -15,6 +15,8 @@ void stampaInfoCitta(City citta) {
     cout << "SETTIMANA " << citta.time.week << " - MESE " << citta.time.month << " - ANNO " << citta.time.year << endl;
     cout << "Citta': " << citta.name << endl;
     cout << "Popolazione: " << citta.population << endl;
-    cout << "Felicita': " << citta.mood << endl;
-    cout << "Budget: " << citta.budget << endl;
+    cout << "Felicita': " << citta.mood << "%" << endl;
+    cout << "Budget: " << citta.budget << "$" << endl;
+
+    cout << endl;
 }

@@ -23,8 +23,8 @@ int main() {
         citta = createNewCity();
     }
 
-    cout << citta.name << " - SETTIMANA " << citta.time.week << " - MESE " << citta.time.month << " - ANNO " << citta.time.year << endl;
     cout << endl;
+    stampaInfoCitta(citta);
 
     menu(citta);
 
@@ -48,7 +48,7 @@ void menu(City citta) {
             if (scelta < 0 || scelta > 5) cout << "Inserimento errato. Riprova." << endl;
         } while (scelta < 0 || scelta > 5);
 
-        cout << endl << endl;
+        cout << endl;
 
         switch (scelta) {
             case 1:
@@ -77,7 +77,7 @@ void menu(City citta) {
                 break;
         }
 
-        cout << endl << endl;
+        cout << endl;
     } while (scelta != 0);
 }
 
