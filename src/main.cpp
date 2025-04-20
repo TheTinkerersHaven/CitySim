@@ -1,5 +1,6 @@
-#include "includes/game.hpp" // Non sarebbe necessario (già incluso in savemanager.hpp) ma lo mettiamo per chiarezza
+#include "includes/game.hpp"
 #include "includes/savemanager.hpp"
+#include "includes/services.hpp"
 #include "includes/simulation.hpp"
 #include "includes/utils.hpp"
 #include <cstdlib>
@@ -28,6 +29,7 @@ int main() {
 void menu(City citta) {
     int scelta = 0;
     int risultatoSimulazione = 0;
+    Service *servizio = nullptr;
 
     do {
         cout << "1) Stampa informazioni citta'" << endl;
@@ -50,29 +52,35 @@ void menu(City citta) {
                 stampaInfoCitta(citta);
                 break;
             case 2:
-                // TODO: Questo assume che i servizi sono stati creati in ordine
-                // Quindi bisogna fare una ricerca per il servizio che stiamo cercando
+                servizio = findService(citta.services, citta.servicesCount, SERVICE_ELECTRIC);
 
                 cout << "Servizio Elettrico: ";
-                if (citta.services[0] != nullptr) {
-                    cout << "Manutenzione " << citta.services[0]->manutenzione * 100 << "%" << endl;
+                if (servizio != nullptr) {
+                    cout << "Manutenzione " << servizio->manutenzione << "%";
                 } else {
-                    cout << "Non presente" << endl;
+                    cout << "Non presente";
                 }
+                cout << endl;
+
+                servizio = findService(citta.services, citta.servicesCount, SERVICE_WATER);
 
                 cout << "Servizio Idrico: ";
-                if (citta.services[1] != nullptr) {
-                    cout << "Manutenzione " << citta.services[1]->manutenzione * 100 << "%" << endl;
+                if (servizio != nullptr) {
+                    cout << "Manutenzione " << servizio->manutenzione << "%";
                 } else {
-                    cout << "Non presente" << endl;
+                    cout << "Non presente";
                 }
+                cout << endl;
+
+                servizio = findService(citta.services, citta.servicesCount, SERVICE_WASTE);
 
                 cout << "Servizio dei Rifiuti: ";
-                if (citta.services[2] != nullptr) {
-                    cout << "Manutenzione " << citta.services[2]->manutenzione * 100 << "%" << endl;
+                if (servizio != nullptr) {
+                    cout << "Manutenzione " << servizio->manutenzione << "%";
                 } else {
-                    cout << "Non presente" << endl;
+                    cout << "Non presente";
                 }
+                cout << endl;
 
                 break;
             case 3:

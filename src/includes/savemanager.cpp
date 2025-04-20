@@ -52,10 +52,9 @@ bool loadCity(const string &path, City &city) {
         city.services[i] = nullptr;
     }
 
-    int serviziPresenti = 0;
-    file >> serviziPresenti;
+    file >> city.servicesCount;
 
-    for (int i = 0; i < serviziPresenti; i++) {
+    for (int i = 0; i < city.servicesCount; i++) {
         city.services[i] = new Service;
         file >> city.services[i]->type;
         file >> city.services[i]->manutenzione;

@@ -9,7 +9,7 @@ int simulate(City &city) {
             continue;
         }
 
-        city.services[i]->manutenzione -= 0.01; // Riduci la manutenzione del servizio dell' 1%
+        city.services[i]->manutenzione -= 1; // Riduci la manutenzione del servizio dell' 1%
 
         // TODO: Rischio
     }
