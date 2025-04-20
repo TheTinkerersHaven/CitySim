@@ -1,5 +1,6 @@
 #include "simulation.hpp"
 #include "utils.hpp"
+#include <cmath>
 
 int simulate(City &city) {
     for (int i = 0; i < MAX_SERVICES; i++) {
@@ -14,8 +15,16 @@ int simulate(City &city) {
         // TODO: Rischio
     }
 
-    // TODO: Simula la popolazione della citta
-    //  - Controllo crescita
+    // Imedisci alla felicita di andare sotto lo 0% e sopra il 100%
+    city.mood = min(100, max(0, city.mood));
+
+    if (city.mood >= 75) {
+        // Se la felicità è alta, aumenta la popolazione
+        city.population += randomNumber(10, 50);
+    } else if (city.mood <= 50) {
+        // Se la felicità è bassa, diminuisci la popolazione
+        city.population -= randomNumber(10, 50);
+    }
 
     if (city.population <= 0) {
         return SIM_FINE_POP;
