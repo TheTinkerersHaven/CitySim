@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define MAX_SERVICES 3
+#define MAX_SERVICES 4
 
 struct Time {
     int week;

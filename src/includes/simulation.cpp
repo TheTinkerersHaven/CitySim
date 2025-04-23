@@ -1,22 +1,33 @@
 #include "simulation.hpp"
 #include "utils.hpp"
-#include <cmath>
+#include <algorithm>
 
 int simulate(City &city) {
     for (int i = 0; i < MAX_SERVICES; i++) {
         if (city.services[i] == nullptr) {
             // Se il servizio non è presente, riduci la felicità
-            city.mood -= 1;
-            continue;
+            city.mood -= 2;
         }
+        else{
+            if(city.services[i]->condizione<40){
+                // Se il servizio ha condizione minore del 40%, riduci leggermente la felicità
+                city.mood -= 1;
+            }
+            else{
+                // Se il servizio è presente, invece, aumenta leggermente la felicità
+                city.mood += 1;
+            }
 
-        city.services[i]->manutenzione -= 1; // Riduci la manutenzione del servizio dell' 1%
+            // Riduci la condizione del servizio
+            city.services[i]->condizione -= randomNumber(1, 5);
+            city.services[i]->condizione = clamp(city.services[i]->condizione, 0, 100);
 
-        // TODO: Rischio
+            // TODO: Rischio
+        }
     }
 
     // Imedisci alla felicita di andare sotto lo 0% e sopra il 100%
-    city.mood = min(100, max(0, city.mood));
+    city.mood = clamp(city.mood, 0, 100);
 
     if (city.mood >= 75) {
         // Se la felicità è alta, aumenta la popolazione
@@ -26,16 +37,13 @@ int simulate(City &city) {
         city.population -= randomNumber(10, 50);
     }
 
+    // Condizione di fine (:D)
     if (city.population <= 0) {
         return SIM_FINE_POP;
     }
 
     // Ogni cittadino paga .20$ alla settimana
     city.budget += int(city.population * 0.20);
-
-    if (city.budget < 0) {
-        return SIM_FINE_BUDGET;
-    }
 
     // Incrementa il tempo
     addWeek(city.time);

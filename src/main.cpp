@@ -12,6 +12,7 @@ void menu(City citta);
 void stampaInfoServizi(City &citta);
 int simulaCitta(City &citta);
 void aggiungiServizio(City &citta);
+void riparaServizio(City &citta);
 
 int main() {
     City citta;
@@ -39,7 +40,8 @@ void menu(City citta) {
         cout << "2) Stampa condizioni servizi" << endl;
         cout << "3) Vai avanti di una settimana" << endl;
         cout << "4) Aggiungi un servizio" << endl;
-        cout << "5) Salva i progressi e continua" << endl;
+        cout << "5) Ripara un servizio" << endl;
+        cout << "6) Salva i progressi e continua" << endl;
         cout << "0) Esci dal gioco senza salvare" << endl;
 
         do {
@@ -69,9 +71,11 @@ void menu(City citta) {
                 aggiungiServizio(citta);
                 break;
             case 5:
+                riparaServizio(citta);
+                break;
+            case 6:
                 if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;
                 else cerr << "ERRORE: Salvataggio fallito. Controlla che il file sia disponibile e riprova." << endl;
-
                 break;
             default:
                 break;
@@ -86,7 +90,7 @@ void stampaInfoServizi(City &citta) {
 
     cout << "Servizio Elettrico: ";
     if (servizio != nullptr) {
-        cout << "Manutenzione " << servizio->manutenzione << "%";
+        cout << "Condizione " << servizio->condizione << "%";
     } else {
         cout << "Non presente";
     }
@@ -96,7 +100,7 @@ void stampaInfoServizi(City &citta) {
 
     cout << "Servizio Idrico: ";
     if (servizio != nullptr) {
-        cout << "Manutenzione " << servizio->manutenzione << "%";
+        cout << "Condizione " << servizio->condizione << "%";
     } else {
         cout << "Non presente";
     }
@@ -106,7 +110,17 @@ void stampaInfoServizi(City &citta) {
 
     cout << "Servizio dei Rifiuti: ";
     if (servizio != nullptr) {
-        cout << "Manutenzione " << servizio->manutenzione << "%";
+        cout << "Condizione " << servizio->condizione << "%";
+    } else {
+        cout << "Non presente";
+    }
+    cout << endl;
+
+    servizio = findService(citta.services, citta.servicesCount, SERVICE_POST);
+
+    cout << "Servizio delle Poste: ";
+    if (servizio != nullptr) {
+        cout << "Condizione " << servizio->condizione << "%";
     } else {
         cout << "Non presente";
     }
@@ -117,15 +131,8 @@ int simulaCitta(City &citta) {
     int risultatoSimulazione = simulate(citta);
 
     // Stampa un messaggio se la città è fallita
-    switch (risultatoSimulazione) {
-        case SIM_FINE_BUDGET:
-            cout << "Budget insufficiente. La citta' e' fallita." << endl;
-            break;
-        case SIM_FINE_POP:
-            cout << "Popolazione insufficiente. La citta' e' fallita." << endl;
-            break;
-        default:
-            break;
+    if (risultatoSimulazione == SIM_FINE_POP) {
+        cout << "Popolazione insufficiente. La citta' e' fallita." << endl;
     }
 
     // Se la città è fallita, indica al menu di uscire
@@ -142,11 +149,10 @@ void aggiungiServizio(City &citta) {
 
     // 1) Chiedi il tipo di servizio
     do {
-        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti): ";
+        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
         cin >> servizioScelto;
-
-        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_WASTE) cout << "Servizio non valido. Riprova." << endl;
-    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_WASTE);
+        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
+    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
 
     // 2) Controlla se il servizio è già presente
     Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);
@@ -161,6 +167,11 @@ void aggiungiServizio(City &citta) {
     cout << "Questo servizio costa " << costo << "$." << endl;
     cout << "Il tuo budget attuale e' " << citta.budget << "$." << endl;
 
+    if (citta.budget < costo) {
+        cout << "Budget insufficiente! Non puoi aggiungere il servizio." << endl;
+        return;
+    }
+
     do {
         cout << "Vuoi continuare? (1 = Si, 0 = No): ";
         cin >> continuare;
@@ -172,18 +183,60 @@ void aggiungiServizio(City &citta) {
         return;
     }
 
-    if (citta.budget < costo) {
-        cout << "Budget insufficiente. Non puoi aggiungere il servizio." << endl;
-        return;
-    }
-
     // 4) Aggiungi il servizio
     citta.budget -= costo;
 
     citta.services[citta.servicesCount] = new Service;
     citta.services[citta.servicesCount]->type = servizioScelto;
-    citta.services[citta.servicesCount]->manutenzione = 100; // Manutenzione al 100%
+    citta.services[citta.servicesCount]->condizione = 100; // Manutenzione al 100%
     citta.servicesCount++;
 
-    cout << "Servizio aggiunto con successo." << endl;
+    cout << "Servizio aggiunto con successo!" << endl;
+}
+
+void riparaServizio(City &citta) {
+    int servizioScelto = 0;
+    int continuare = 0;
+
+    // 1) Chiedi il tipo di servizio
+    do {
+        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
+        cin >> servizioScelto;
+        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
+    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
+
+    // 2) Controlla se il servizio è già presente
+    Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);
+    if (servizio == nullptr) {
+        cout << "Servizio non presente." << endl;
+        return;
+    }
+
+    // 3) Controlla il budget
+    int costo = serviceCost(servizioScelto) / 2;
+
+    cout << "Riparare questo servizio costa " << costo << "$." << endl;
+    cout << "Il tuo budget attuale e' " << citta.budget << "$." << endl;
+
+    if (citta.budget < costo) {
+        cout << "Budget insufficiente! Non puoi riparare il servizio." << endl;
+        return;
+    }
+
+    do {
+        cout << "Vuoi continuare? (1 = Si, 0 = No): ";
+        cin >> continuare;
+        if (continuare != 1 && continuare != 0) cout << "Inserimento errato. Riprova." << endl;
+    } while (continuare != 1 && continuare != 0);
+
+    if (continuare == 0) {
+        cout << "Operazione annullata." << endl;
+        return;
+    }
+
+    // 4) Ripara il servizio
+    citta.budget -= costo;
+    servizio->condizione = 100;
+
+    cout << "Servizio riparato con successo!" << endl;
 }

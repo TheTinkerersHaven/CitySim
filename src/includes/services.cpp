@@ -7,7 +7,6 @@ Service *findService(Service *services[], int dim, int type) {
         if (services[i]->type == type) {
             return services[i];
         }
-
         i++;
     }
 
@@ -22,6 +21,8 @@ int serviceCost(int type) {
             return 20'000;
         case SERVICE_WASTE:
             return 15'000;
+        case SERVICE_POST:
+            return 25'000;
         default:
             return 0;
     }

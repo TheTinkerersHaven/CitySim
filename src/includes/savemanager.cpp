@@ -28,7 +28,7 @@ bool saveCity(const string &path, City city) {
 
     for (int i = 0; i < city.servicesCount; i++) {
         file << city.services[i]->type << endl;
-        file << city.services[i]->manutenzione << endl;
+        file << city.services[i]->condizione << endl;
     }
 
     file.close();
@@ -57,7 +57,7 @@ bool loadCity(const string &path, City &city) {
     for (int i = 0; i < city.servicesCount; i++) {
         city.services[i] = new Service;
         file >> city.services[i]->type;
-        file >> city.services[i]->manutenzione;
+        file >> city.services[i]->condizione;
     }
 
     file.close();
