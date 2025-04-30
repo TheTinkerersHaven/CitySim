@@ -47,8 +47,8 @@ void menu(City citta) {
         do {
             cout << "Scegli un'azione: ";
             cin >> scelta;
-            if (scelta < 0 || scelta > 5) cout << "Inserimento errato. Riprova." << endl;
-        } while (scelta < 0 || scelta > 5);
+            if (scelta < 0 || scelta > 6) cout << "Inserimento errato. Riprova." << endl;
+        } while (scelta < 0 || scelta > 6);
 
         cout << endl;
 
@@ -188,7 +188,8 @@ void aggiungiServizio(City &citta) {
 
     citta.services[citta.servicesCount] = new Service;
     citta.services[citta.servicesCount]->type = servizioScelto;
-    citta.services[citta.servicesCount]->condizione = 100; // Manutenzione al 100%
+    // Imposta condizione al 100%
+    citta.services[citta.servicesCount]->condizione = 100;
     citta.servicesCount++;
 
     cout << "Servizio aggiunto con successo!" << endl;
