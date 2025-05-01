@@ -1,4 +1,5 @@
 #include "services.hpp"
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -66,6 +67,17 @@ string nomeServizio(int servizio) {
         default:
             throw logic_error("Servizio non valido");
     };
+}
+
+int chiediServizio() {
+    int servizioScelto = 0;
+    do {
+        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
+        cin >> servizioScelto;
+        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
+    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
+
+    return servizioScelto;
 }
 
 void shift(Service *services[], int dim, int index) {

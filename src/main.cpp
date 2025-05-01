@@ -144,15 +144,8 @@ int simulaCitta(City &citta) {
 }
 
 void aggiungiServizio(City &citta) {
-    int servizioScelto = 0;
-    int continuare = 0;
-
     // 1) Chiedi il tipo di servizio
-    do {
-        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
-        cin >> servizioScelto;
-        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
-    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
+    int servizioScelto = chiediServizio();
 
     // 2) Controlla se il servizio è già presente
     Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);
@@ -172,13 +165,9 @@ void aggiungiServizio(City &citta) {
         return;
     }
 
-    do {
-        cout << "Vuoi continuare? (1 = Si, 0 = No): ";
-        cin >> continuare;
-        if (continuare != 1 && continuare != 0) cout << "Inserimento errato. Riprova." << endl;
-    } while (continuare != 1 && continuare != 0);
+    bool conferma = chiediConferma();
 
-    if (continuare == 0) {
+    if (!conferma) {
         cout << "Operazione annullata." << endl;
         return;
     }
@@ -196,15 +185,8 @@ void aggiungiServizio(City &citta) {
 }
 
 void riparaServizio(City &citta) {
-    int servizioScelto = 0;
-    int continuare = 0;
-
     // 1) Chiedi il tipo di servizio
-    do {
-        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
-        cin >> servizioScelto;
-        if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
-    } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
+    int servizioScelto = chiediServizio();
 
     // 2) Controlla se il servizio è già presente
     Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);
@@ -224,13 +206,9 @@ void riparaServizio(City &citta) {
         return;
     }
 
-    do {
-        cout << "Vuoi continuare? (1 = Si, 0 = No): ";
-        cin >> continuare;
-        if (continuare != 1 && continuare != 0) cout << "Inserimento errato. Riprova." << endl;
-    } while (continuare != 1 && continuare != 0);
+    bool conferma = chiediConferma();
 
-    if (continuare == 0) {
+    if (!conferma) {
         cout << "Operazione annullata." << endl;
         return;
     }
