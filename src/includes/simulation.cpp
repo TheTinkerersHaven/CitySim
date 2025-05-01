@@ -93,5 +93,6 @@ void addWeek(Time &time) {
 
 // https://www.desmos.com/calculator/5tbf21rzf2
 double probabilitaRischio(int condizione) {
-    return 50 * pow(double(1 - double(condizione) / 100), 2);
+    // Conversione a double per evitare che la divisione sia fatta tra interi
+    return 50 * pow(1 - double(condizione) / 100, 2);
 }
