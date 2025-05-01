@@ -86,45 +86,19 @@ void menu(City citta) {
 }
 
 void stampaInfoServizi(City &citta) {
-    Service *servizio = findService(citta.services, citta.servicesCount, SERVICE_ELECTRIC);
+    Service *servizio = nullptr;
 
-    cout << "Servizio Elettrico: ";
-    if (servizio != nullptr) {
-        cout << "Condizione " << servizio->condizione << "%";
-    } else {
-        cout << "Non presente";
+    // Il primo servizio ha tipo 1 e l'ultimo tipo 4 (Lo stesso delle poste, quindi usiamo il define delle poste per farci riferimento)
+    for (int i = 1; i <= SERVICE_POST; i++) {
+        servizio = findService(citta.services, citta.servicesCount, i);
+
+        cout << "Servizio " << nomeServizio(i) << ": ";
+        if (servizio == nullptr) {
+            cout << "Non presente" << endl;
+        } else {
+            cout << "Condizione " << servizio->condizione << "%" << endl;
+        }
     }
-    cout << endl;
-
-    servizio = findService(citta.services, citta.servicesCount, SERVICE_WATER);
-
-    cout << "Servizio Idrico: ";
-    if (servizio != nullptr) {
-        cout << "Condizione " << servizio->condizione << "%";
-    } else {
-        cout << "Non presente";
-    }
-    cout << endl;
-
-    servizio = findService(citta.services, citta.servicesCount, SERVICE_WASTE);
-
-    cout << "Servizio dei Rifiuti: ";
-    if (servizio != nullptr) {
-        cout << "Condizione " << servizio->condizione << "%";
-    } else {
-        cout << "Non presente";
-    }
-    cout << endl;
-
-    servizio = findService(citta.services, citta.servicesCount, SERVICE_POST);
-
-    cout << "Servizio delle Poste: ";
-    if (servizio != nullptr) {
-        cout << "Condizione " << servizio->condizione << "%";
-    } else {
-        cout << "Non presente";
-    }
-    cout << endl;
 }
 
 int simulaCitta(City &citta) {
