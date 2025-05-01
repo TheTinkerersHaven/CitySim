@@ -17,7 +17,7 @@ struct Service {
 };
 
 Service *findService(Service *services[], int dim, int type);
-void removeService(Service *services[], int &dim, int type);
+void removeService(Service *services[], int dim, int type);
 
 int serviceCost(int type);
 string nomeServizio(int servizio);
