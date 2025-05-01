@@ -1,21 +1,23 @@
 #include "simulation.hpp"
+#include "services.hpp"
 #include "utils.hpp"
 #include <algorithm>
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
 double probabilitaRischio(int condizione);
-string nomeServizio(int servizio);
 
 int simulate(City &city) {
     for (int i = 0; i < MAX_SERVICES; i++) {
-        if (city.services[i] == nullptr) {
+        Service *servizio = city.services[i];
+
+        if (servizio == nullptr) {
             // Se il servizio non è presente, riduci la felicità
             city.mood -= 2;
         } else {
-            if (city.services[i]->condizione < 40) {
+            if (servizio->condizione < 40) {
                 // Se il servizio ha condizione minore del 40%, riduci leggermente la felicità
                 city.mood -= 1;
             } else {
@@ -24,15 +26,25 @@ int simulate(City &city) {
             }
 
             // Riduci la condizione del servizio
-            city.services[i]->condizione -= randomNumber(1, 5);
-            city.services[i]->condizione = clamp(city.services[i]->condizione, 0, 100);
+            servizio->condizione -= randomNumber(1, 5);
+            servizio->condizione = clamp(servizio->condizione, 0, 100);
 
             // Possibili disastri dei servizi
-            double poss = probabilitaRischio(city.services[i]->condizione);
-            int randN = randomNumber(1, 100); 
-            if (randN < poss) {
-                cout << "Il servizio " << nomeServizio(city.services[i]->type) << " e' stato distrutto a causa di una catastrofe!" << endl;
-                // TODO: rimuovi servizio
+            double possibilita = probabilitaRischio(servizio->condizione);
+            int chance = randomNumber(1, 100);
+
+            if (chance < possibilita) {
+                cout << "Il servizio " << nomeServizio(servizio->type) << " e' stato distrutto a causa di una catastrofe!" << endl;
+
+                // Se il servizio è distrutto, riduci la felicità
+                city.mood -= 10;
+
+                // Rimuovi il servizio
+                removeService(city.services, city.servicesCount, servizio->type);
+                city.servicesCount--;
+
+                // Riduci l'index del loop per processare il prossimo servizio che dopo la rimozione del corrente é ora allo stesso index
+                i--;
             }
         }
     }
@@ -79,21 +91,7 @@ void addWeek(Time &time) {
     }
 }
 
+// https://www.desmos.com/calculator/5tbf21rzf2
 double probabilitaRischio(int condizione) {
     return 50 * pow(double(1 - double(condizione) / 100), 2);
-}
-
-string nomeServizio(int servizio) {
-    switch (servizio) {
-        case SERVICE_ELECTRIC:
-            return "elettrico";
-        case SERVICE_WATER:
-            return "idrico";
-        case SERVICE_WASTE:
-            return "fognario";
-        case SERVICE_POST:
-            return "postale";
-        default:
-            throw logic_error("Servizio non valido");
-    };
 }

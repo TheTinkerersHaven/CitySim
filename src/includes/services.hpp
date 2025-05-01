@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+using namespace std;
+
 #define SERVICE_ELECTRIC 1
 #define SERVICE_WATER 2
 #define SERVICE_WASTE 3
@@ -13,4 +17,7 @@ struct Service {
 };
 
 Service *findService(Service *services[], int dim, int type);
+void removeService(Service *services[], int &dim, int type);
+
 int serviceCost(int type);
+string nomeServizio(int servizio);
