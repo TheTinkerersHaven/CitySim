@@ -69,7 +69,7 @@ string nomeServizio(int servizio) {
     };
 }
 
-int chiediServizio(const string& messaggio) {
+int chiediServizio(const string &messaggio) {
     int servizioScelto = 0;
     do {
         cout << "Scegli il servizio " << messaggio << " (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
@@ -84,4 +84,5 @@ void shift(Service *services[], int dim, int index) {
     for (int i = index; i < dim - 1; i++) {
         services[i] = services[i + 1];
     }
+    services[dim - 1] = nullptr;
 }
