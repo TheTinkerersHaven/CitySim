@@ -66,6 +66,8 @@ bool loadCity(const string &path, City &city) {
 }
 
 bool isValidName(const string &name) {
+    // Richiedi un nome
+    if (name.empty()) return false;
     // Controlla se il nome è troppo lungo
     if (name.length() > MAX_NAME_LENGTH) return false;
 
@@ -82,6 +84,7 @@ City createNewCity() {
 
     do {
         cout << "Inserisci il nome della citta': ";
+        cin.ignore();
         getline(cin, city.name);
         if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
     } while (!isValidName(city.name));

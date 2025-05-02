@@ -13,15 +13,16 @@ void stampaInfoServizi(City &citta);
 int simulaCitta(City &citta);
 void aggiungiServizio(City &citta);
 void riparaServizio(City &citta);
+bool loadSave(City &citta);
 
 int main() {
-    City citta;
     srand((unsigned int)time(NULL));
 
-    // NOTA: Questo utilizza la cartella di output di cmake per il file di salvataggio
-    if (!loadCity("citta.txt", citta)) {
-        cerr << "ERRORE: Impossibile caricare la citta'. Generando una nuova citta'." << endl;
-        citta = createNewCity();
+    City citta;
+
+    if (!loadSave(citta)) {
+        cerr << "ERRORE: Caricamento citta' fallito." << endl;
+        return 1;
     }
 
     cout << endl;
@@ -74,6 +75,7 @@ void menu(City citta) {
                 riparaServizio(citta);
                 break;
             case 6:
+                // TODO: cambia il file di salvataggio in base al save caricato
                 if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;
                 else cerr << "ERRORE: Salvataggio fallito. Controlla che il file sia disponibile e riprova." << endl;
                 break;
@@ -192,4 +194,41 @@ void riparaServizio(City &citta) {
     servizio->condizione = 100;
 
     cout << "Servizio riparato con successo!" << endl;
+}
+
+bool loadSave(City &citta) {
+    cout << "Carica o crea una nuova citta':" << endl;
+
+    // TODO: Mostra le citta salvate
+    int cittaSalvate = 2;
+
+    cout << "1) Citta' A - Settimana 1 Mese 4 Anno 2025 - Pop 1465 Budget 3058$" << endl;
+    cout << "2) Citta' B - Settimana 3 Mese 7 Anno 2025 - Pop 2569 Budget 8826$" << endl;
+    cout << endl;
+    cout << "0) Crea una nuova citta'" << endl;
+    cout << endl;
+
+    int scelta = 0;
+
+    // TODO: Dato che poi ci sono anche opzioni come crea e ordina, usiamo sempre numeri oppure usiamo lettere? (citta coi numeri e opzioni con le lettere)
+    do {
+        cout << "Scegli un'azione: ";
+        cin >> scelta;
+        if (scelta < 0 || scelta > cittaSalvate) cout << "Inserimento errato. Riprova." << endl;
+    } while (scelta < 0 || scelta > cittaSalvate);
+
+    if (scelta == 0) {
+        cout << "Creazione citta'..." << endl;
+        citta = createNewCity();
+        return true;
+    }
+
+    // TODO: Carica la citta' selezionata
+    if (!loadCity("citta.txt", citta)) {
+        cerr << "ERRORE: Caricamento citta' fallito." << endl;
+        return false;
+    }
+
+    cout << "Citta' caricata con successo!" << endl;
+    return true;
 }
