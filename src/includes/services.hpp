@@ -22,4 +22,4 @@ void removeService(Service *services[], int dim, int type);
 int serviceCost(int type);
 string nomeServizio(int servizio);
 
-int chiediServizio();
+int chiediServizio(const string &messaggio);

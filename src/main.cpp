@@ -119,7 +119,7 @@ int simulaCitta(City &citta) {
 
 void aggiungiServizio(City &citta) {
     // 1) Chiedi il tipo di servizio
-    int servizioScelto = chiediServizio();
+    int servizioScelto = chiediServizio("da aggiungere");
 
     // 2) Controlla se il servizio è già presente
     Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);
@@ -160,7 +160,7 @@ void aggiungiServizio(City &citta) {
 
 void riparaServizio(City &citta) {
     // 1) Chiedi il tipo di servizio
-    int servizioScelto = chiediServizio();
+    int servizioScelto = chiediServizio("da riparare");
 
     // 2) Controlla se il servizio è già presente
     Service *servizio = findService(citta.services, citta.servicesCount, servizioScelto);

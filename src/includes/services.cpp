@@ -69,10 +69,10 @@ string nomeServizio(int servizio) {
     };
 }
 
-int chiediServizio() {
+int chiediServizio(const string& messaggio) {
     int servizioScelto = 0;
     do {
-        cout << "Scegli il servizio da aggiungere (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
+        cout << "Scegli il servizio " << messaggio << " (1 = Elettrico, 2 = Idrico, 3 = Rifiuti, 4 = Poste): ";
         cin >> servizioScelto;
         if (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST) cout << "Servizio non valido. Riprova." << endl;
     } while (servizioScelto < SERVICE_ELECTRIC || servizioScelto > SERVICE_POST);
