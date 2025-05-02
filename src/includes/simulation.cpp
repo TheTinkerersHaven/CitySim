@@ -25,13 +25,12 @@ int simulate(City &city) {
                 city.mood += 1;
             }
 
-            // Riduci la condizione del servizio
-            servizio->condizione -= randomNumber(1, 5);
-            servizio->condizione = clamp(servizio->condizione, 0, 100);
-
             // Possibili disastri dei servizi
+            // Facciamo il calcolo prima di ridurre la condizione così non avere situazioni in cui un impianto prima al 100% viene immediatamente distrutto
             double possibilita = probabilitaRischio(servizio->condizione);
-            int chance = randomNumber(1, 100);
+
+            // rand() / RAND_MAX genera un numero tra 0 e 1, quindi lo moltiplichiamo per 100 per avere una percentuale
+            double chance = (double(rand()) / RAND_MAX) * 100;
 
             if (chance < possibilita) {
                 cout << "Il servizio " << nomeServizio(servizio->type) << " e' stato distrutto a causa di una catastrofe!" << endl;
@@ -45,6 +44,10 @@ int simulate(City &city) {
 
                 // Riduci l'index del loop per processare il prossimo servizio che dopo la rimozione del corrente é ora allo stesso index
                 i--;
+            } else {
+                // Riduci la condizione del servizio
+                servizio->condizione -= randomNumber(1, 5);
+                servizio->condizione = clamp(servizio->condizione, 0, 100);
             }
         }
     }
