@@ -1,18 +1,25 @@
 #include "savemanager.hpp"
 #include "game.hpp"
 #include "utils.hpp"
+#include <filesystem>
 #include <iostream>
 
-const int MAX_NAME_LENGTH = 50;
+#define SAVE_DIRECTORY "saves"
 
-const int GEN_POPULATION_MIN = 1000;
-const int GEN_POPULATION_MAX = 2000;
+#define MAX_NAME_LENGTH 50
 
-const int GEN_BUDGET_MIN = 50;
-const int GEN_BUDGET_MAX = 100;
+#define GEN_POPULATION_MIN 1000
+#define GEN_POPULATION_MAX 2000
 
-bool saveCity(const string &path, City city) {
-    ofstream file(path);
+#define GEN_BUDGET_MIN 50
+#define GEN_BUDGET_MAX 100
+
+using namespace std;
+
+bool saveCity(City city) {
+    // Crea il percorso in base alla cartella in cui mettere i salvataggi, e il nome della citta
+    // -> saves/<name>.txt
+    ofstream file(SAVE_DIRECTORY / filesystem::path(city.name).replace_extension(".txt"));
 
     if (!file) return false;
 
@@ -36,9 +43,11 @@ bool saveCity(const string &path, City city) {
 }
 
 bool loadCity(const string &path, City &city) {
-    ifstream file(path); // Dichiara "file" e ci inserisce il percorso del file
+    // Dichiara "file" e ci e apri il file al percorso indicato
+    ifstream file(path);
 
-    if (!file) return false; // Se il file non esiste, dai errore
+    // Se il file non esiste, dai errore
+    if (!file) return false;
 
     getline(file, city.name);
     file >> city.population;
@@ -105,4 +114,38 @@ City createNewCity() {
     }
 
     return city;
+}
+
+int findSaves(City saves[], int capacity) {
+    // Dobbiamo creare la cartella se non esiste oppure "filesystem::directory_iterator" tira un exception
+    if (!filesystem::exists(SAVE_DIRECTORY)) {
+        filesystem::create_directory(SAVE_DIRECTORY);
+    }
+
+    int savesFound = 0;
+    bool troppiFile = false;
+
+    for (filesystem::directory_iterator itr(SAVE_DIRECTORY); itr != filesystem::end(itr); itr++) {
+        // Controlla se abbiamo trovato un file con estensione .txt
+        if (itr->is_regular_file() && itr->path().extension() == ".txt") {
+            // Controlla se abbiamo gia caricato il numero massimo di salvataggi che possiamo mettere nell'array
+            if (savesFound >= capacity) {
+                troppiFile = true;
+            }
+            // Prova a caricare il salvataggio e se va a buon fine aggiungi alla dimensione logica dell'array
+            else if (loadCity(itr->path().string(), saves[savesFound])) {
+                savesFound++;
+            }
+            // Se è stato impossibile caricare il salvataggio avvisa l'utente
+            else {
+                cerr << "Impossibile caricare il salvataggio presente in " << itr->path() << "." << endl;
+            }
+        }
+    }
+
+    if (troppiFile) {
+        cerr << "Sono stati trovati più salvataggi di quelli possibili. Alcuni salvataggi non sono stati presi in considerazione." << endl;
+    }
+
+    return savesFound;
 }

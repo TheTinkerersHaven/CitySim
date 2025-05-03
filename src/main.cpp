@@ -75,8 +75,7 @@ void menu(City citta) {
                 riparaServizio(citta);
                 break;
             case 6:
-                // TODO: cambia il file di salvataggio in base al save caricato
-                if (saveCity("citta.txt", citta)) cout << "Salvataggio effettuato." << endl;
+                if (saveCity(citta)) cout << "Salvataggio effettuato." << endl;
                 else cerr << "ERRORE: Salvataggio fallito. Controlla che il file sia disponibile e riprova." << endl;
                 break;
             default:
@@ -197,15 +196,25 @@ void riparaServizio(City &citta) {
 }
 
 bool loadSave(City &citta) {
-    cout << "Carica o crea una nuova citta':" << endl;
+    cout << "Carica o crea una nuova citta':" << endl << endl;
 
-    // TODO: Mostra le citta salvate
-    int cittaSalvate = 2;
+    City cities[MAX_SAVES];
+    int cittaSalvate = findSaves(cities, MAX_SAVES);
 
-    cout << "1) Citta' A - Settimana 1 Mese 4 Anno 2025 - Pop 1465 Budget 3058$" << endl;
-    cout << "2) Citta' B - Settimana 3 Mese 7 Anno 2025 - Pop 2569 Budget 8826$" << endl;
+    for (int i = 0; i < cittaSalvate; i++) {
+        cout << i + 1 << ") " << cities[i].name << "\tSettimana " << cities[i].time.week << " Mese " << cities[i].time.month << " Anno " << cities[i].time.year << " - Popolazione "
+             << cities[i].population << ", Budget " << cities[i].budget << "$" << endl;
+    }
+
+    if (cittaSalvate == 0) {
+        cout << "Non ci sono citta salvate, creane una per iniziare a giocare. " << endl;
+    }
+
     cout << endl;
-    cout << "0) Crea una nuova citta'" << endl;
+    cout << "c) Crea una nuova citta'" << endl;
+    cout << "d) Cancella una citta'" << endl;
+    cout << "o) Ordina per ..." << endl;
+    cout << "q) Esci" << endl;
     cout << endl;
 
     int scelta = 0;
@@ -219,15 +228,14 @@ bool loadSave(City &citta) {
 
     if (scelta == 0) {
         cout << "Creazione citta'..." << endl;
+
         citta = createNewCity();
+        saveCity(citta);
+
         return true;
     }
 
-    // TODO: Carica la citta' selezionata
-    if (!loadCity("citta.txt", citta)) {
-        cerr << "ERRORE: Caricamento citta' fallito." << endl;
-        return false;
-    }
+    citta = cities[scelta - 1];
 
     cout << "Citta' caricata con successo!" << endl;
     return true;

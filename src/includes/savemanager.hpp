@@ -3,7 +3,11 @@
 #include "game.hpp"
 #include <fstream>
 
-bool saveCity(const string &path, City city);
+#define MAX_SAVES 9
+
+bool saveCity(City city);
 bool loadCity(const string &path, City &city);
 
 City createNewCity();
+
+int findSaves(City saves[], int capacity);
