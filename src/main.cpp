@@ -15,14 +15,16 @@ void aggiungiServizio(City &citta);
 void riparaServizio(City &citta);
 bool loadSave(City &citta);
 
+void pressAnyKeyToContinue();
+bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate);
+
 int main() {
     srand((unsigned int)time(NULL));
 
     City citta;
 
     if (!loadSave(citta)) {
-        cerr << "ERRORE: Caricamento citta' fallito." << endl;
-        return 1;
+        return 0;
     }
 
     cout << endl;
@@ -195,18 +197,31 @@ void riparaServizio(City &citta) {
     cout << "Servizio riparato con successo!" << endl;
 }
 
-bool loadSave(City &citta) {
+bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate) {
+    // '0' + cittaSalvate da un il numero "cittaSalvate" come carattere
+    if (scelta <= ('0' + cittaSalvate) && scelta > '0') return true;
+
+    // Crea un salvataggio
+    if (scelta == 'c') return true;
+    // Cancella un salvataggio
+    if (scelta == 'd') return true;
+    // Ordina i salvataggi
+    if (scelta == 'o') return true;
+    // Esci
+    if (scelta == 'q') return true;
+
+    return false;
+}
+
+void stampaOpzioniMenuSalvataggio(City cities[], int dim) {
     cout << "Carica o crea una nuova citta':" << endl << endl;
 
-    City cities[MAX_SAVES];
-    int cittaSalvate = findSaves(cities, MAX_SAVES);
-
-    for (int i = 0; i < cittaSalvate; i++) {
-        cout << i + 1 << ") " << cities[i].name << "\tSettimana " << cities[i].time.week << " Mese " << cities[i].time.month << " Anno " << cities[i].time.year << " - Popolazione "
-             << cities[i].population << ", Budget " << cities[i].budget << "$" << endl;
+    for (int i = 0; i < dim; i++) {
+        cout << i + 1 << ") " << cities[i].name << " - Settimana " << cities[i].time.week << " Mese " << cities[i].time.month << " Anno " << cities[i].time.year
+             << " - Popolazione " << cities[i].population << ", Budget " << cities[i].budget << "$" << endl;
     }
 
-    if (cittaSalvate == 0) {
+    if (dim == 0) {
         cout << "Non ci sono citta salvate, creane una per iniziare a giocare. " << endl;
     }
 
@@ -216,26 +231,65 @@ bool loadSave(City &citta) {
     cout << "o) Ordina per ..." << endl;
     cout << "q) Esci" << endl;
     cout << endl;
+}
 
-    int scelta = 0;
+void pressAnyKeyToContinue() {
+    cout << "Premi qualsiasi tasto per tornare proseguire..." << endl;
 
-    // TODO: Dato che poi ci sono anche opzioni come crea e ordina, usiamo sempre numeri oppure usiamo lettere? (citta coi numeri e opzioni con le lettere)
+    // Aspetta un input dall'utente prima di continuare
+    // cin.ignore() se il buffer è vuoto aspetta un input quindi possiamo usare quello per non interferire poi con il cin della scelta
+    cin.ignore();
+}
+
+bool loadSave(City &citta) {
+    City cities[MAX_SAVES];
+    int cittaSalvate = findSaves(cities, MAX_SAVES);
+    char scelta;
+    bool esciMenu = false;
+
     do {
-        cout << "Scegli un'azione: ";
-        cin >> scelta;
-        if (scelta < 0 || scelta > cittaSalvate) cout << "Inserimento errato. Riprova." << endl;
-    } while (scelta < 0 || scelta > cittaSalvate);
+        stampaOpzioniMenuSalvataggio(cities, cittaSalvate);
 
-    if (scelta == 0) {
-        cout << "Creazione citta'..." << endl;
+        do {
+            cout << "Scegli un'azione: ";
+            cin >> scelta;
+            cin.ignore();
 
-        citta = createNewCity();
-        saveCity(citta);
+            if (!sceltaMenuSalvataggiValida(scelta, cittaSalvate)) cout << "Inserimento errato. Riprova." << endl;
+        } while (!sceltaMenuSalvataggiValida(scelta, cittaSalvate));
 
-        return true;
-    }
+        cout << endl;
 
-    citta = cities[scelta - 1];
+        switch (scelta) {
+            case 'q':
+                return false;
+            case 'c':
+                if (cittaSalvate >= MAX_SAVES) {
+                    cerr << "Impossibile creare una nuova citta. Limite raggiunto." << endl;
+                    pressAnyKeyToContinue();
+
+                    break;
+                }
+
+                cout << "Creazione citta'..." << endl;
+
+                citta = createNewCity();
+                saveCity(citta);
+
+                return true;
+            case 'd':
+                // TODO: chiedi quale citta eliminare
+                break;
+            case 'o':
+                // TODO: chiedi per quale criterio ordinare e poi richiedi
+                break;
+            default:
+                // A questo punto dovremmo avere solo numeri
+                esciMenu = true;
+                citta = cities[scelta - '0' - 1];
+        }
+
+    } while (!esciMenu);
 
     cout << "Citta' caricata con successo!" << endl;
     return true;

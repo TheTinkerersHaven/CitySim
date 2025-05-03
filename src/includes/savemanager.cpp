@@ -93,7 +93,6 @@ City createNewCity() {
 
     do {
         cout << "Inserisci il nome della citta': ";
-        cin.ignore();
         getline(cin, city.name);
         if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
     } while (!isValidName(city.name));
