@@ -241,6 +241,12 @@ void pressAnyKeyToContinue() {
     cin.ignore();
 }
 
+void shiftCitta(City cities[], int dim, int index) {
+    for (int i = index; i < dim - 1; i++) {
+        cities[i] = cities[i + 1];
+    }
+}
+
 bool loadSave(City &citta) {
     City cities[MAX_SAVES];
     int cittaSalvate = findSaves(cities, MAX_SAVES);
@@ -277,9 +283,40 @@ bool loadSave(City &citta) {
                 saveCity(citta);
 
                 return true;
-            case 'd':
-                // TODO: chiedi quale citta eliminare
+            case 'd': {
+                if (cittaSalvate <= 0) {
+                    cerr << "Non ci sono citta' salvate." << endl;
+                    pressAnyKeyToContinue();
+
+                    break;
+                }
+
+                int cityToDelete = 0;
+
+                do {
+                    cout << "Scegli una citta da eliminare: ";
+                    cin >> cityToDelete;
+
+                    if (cityToDelete <= 0 || cityToDelete > cittaSalvate) cout << "Inserimento errato. Riprova" << endl;
+                } while (cityToDelete <= 0 || cityToDelete > cittaSalvate);
+
+                cout << "Stai per eliminare la citta' " << cities[cityToDelete - 1].name << endl;
+                bool conferma = chiediConferma();
+
+                if (!conferma) {
+                    cout << "Operazione annullata." << endl;
+                    break;
+                }
+
+                // Cancella il file di save
+                deleteCity(cities[cityToDelete - 1]);
+
+                // Rimuovi il save dall'array caricato in RAM per tornare al menu
+                shiftCitta(cities, cittaSalvate, cityToDelete - 1);
+                cittaSalvate--;
+
                 break;
+            }
             case 'o':
                 // TODO: chiedi per quale criterio ordinare e poi richiedi
                 break;

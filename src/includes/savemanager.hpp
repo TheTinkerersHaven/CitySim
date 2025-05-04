@@ -7,6 +7,7 @@
 
 bool saveCity(City city);
 bool loadCity(const string &path, City &city);
+bool deleteCity(City city);
 
 City createNewCity();
 

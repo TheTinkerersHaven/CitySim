@@ -74,6 +74,12 @@ bool loadCity(const string &path, City &city) {
     return true;
 }
 
+bool deleteCity(City city) {
+    filesystem::path saveFile = SAVE_DIRECTORY / filesystem::path(city.name).replace_extension(".txt");
+
+    return filesystem::remove(saveFile);
+}
+
 bool isValidName(const string &name) {
     // Richiedi un nome
     if (name.empty()) return false;

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void shift(Service *services[], int dim, int index);
+void shiftServizi(Service *services[], int dim, int index);
 
 Service *findService(Service *services[], int dim, int type) {
     int i = 0;
@@ -30,7 +30,7 @@ void removeService(Service *services[], int dim, int type) {
             services[i] = nullptr;
 
             // Sposta gli altri servizi a sinistra
-            shift(services, dim, i);
+            shiftServizi(services, dim, i);
 
             return;
         }
@@ -80,7 +80,7 @@ int chiediServizio(const string &messaggio) {
     return servizioScelto;
 }
 
-void shift(Service *services[], int dim, int index) {
+void shiftServizi(Service *services[], int dim, int index) {
     for (int i = index; i < dim - 1; i++) {
         services[i] = services[i + 1];
     }
