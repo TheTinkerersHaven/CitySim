@@ -13,7 +13,7 @@ void stampaInfoServizi(City &citta);
 int simulaCitta(City &citta);
 void aggiungiServizio(City &citta);
 void riparaServizio(City &citta);
-bool loadSave(City &citta);
+bool saveMenu(City &citta);
 
 void pressAnyKeyToContinue();
 bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate);
@@ -23,7 +23,7 @@ int main() {
 
     City citta;
 
-    if (!loadSave(citta)) {
+    if (!saveMenu(citta)) {
         return 0;
     }
 
@@ -247,7 +247,41 @@ void shiftCitta(City cities[], int dim, int index) {
     }
 }
 
-bool loadSave(City &citta) {
+int calcolaTempoTotale(Time time) {
+    return time.week + (time.month + (time.year * 12)) * 4;
+}
+
+void sortCityBy(City cities[], int dim, int by) {
+    int min_index = 0;
+
+    for (int i = 0; i < dim - 1; i++) {
+        min_index = i;
+
+        for (int j = i + 1; j < dim; j++) {
+            // A clang piace distruggere il formatting di questo if in qualcosa di impossibile da leggere, quindi lo disattiviamo
+            // clang-format off
+            if (
+                // Se stiamo ordinando per nome, ordina alfabeticamente dal piu in maniera crescente
+                (by == 1 && cities[min_index].name > cities[j].name) ||
+                // Se stiamo ordinando per popolazione, ordina decrescenemente
+                (by == 2 && cities[min_index].population < cities[j].population) ||
+                // Se stiamo ordinando per budget, ordina decrescenemente
+                (by == 3 && cities[min_index].budget < cities[j].budget) ||
+                // Se stiamo ordinando per tempo passato, ordina decrescenemente
+                (by == 4 && calcolaTempoTotale(cities[min_index].time) < calcolaTempoTotale(cities[j].time))
+            ) {
+                min_index = j;
+            }
+            // clang-format on
+        }
+
+        if (i != min_index) {
+            swap(cities[i], cities[min_index]);
+        }
+    }
+}
+
+bool saveMenu(City &citta) {
     City cities[MAX_SAVES];
     int cittaSalvate = findSaves(cities, MAX_SAVES);
     char scelta;
@@ -259,6 +293,8 @@ bool loadSave(City &citta) {
         do {
             cout << "Scegli un'azione: ";
             cin >> scelta;
+
+            // Dato che "scelta" è un char dobbiamo ripulire l'input altrimenti altri caratteri come "\n" sono già nel buffer
             cin.ignore();
 
             if (!sceltaMenuSalvataggiValida(scelta, cittaSalvate)) cout << "Inserimento errato. Riprova." << endl;
@@ -317,15 +353,32 @@ bool loadSave(City &citta) {
 
                 break;
             }
-            case 'o':
-                // TODO: chiedi per quale criterio ordinare e poi richiedi
+            case 'o': {
+                if (cittaSalvate <= 0) {
+                    cerr << "Non ci sono citta' da ordinare." << endl;
+                    pressAnyKeyToContinue();
+
+                    break;
+                }
+
+                int sortBy;
+
+                do {
+                    cout << "Per cosa ordinare le citta? [1 - Nome, 2 - Popolazione, 3 - Budget, 4 - Tempo]: ";
+                    cin >> sortBy;
+
+                    if (sortBy < 1 || sortBy > 4) cerr << "Inserimento errato. Riprova" << endl;
+                } while (sortBy < 1 || sortBy > 4);
+
+                sortCityBy(cities, cittaSalvate, sortBy);
+
                 break;
+            }
             default:
                 // A questo punto dovremmo avere solo numeri
                 esciMenu = true;
                 citta = cities[scelta - '0' - 1];
         }
-
     } while (!esciMenu);
 
     cout << "Citta' caricata con successo!" << endl;
