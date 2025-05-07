@@ -286,7 +286,8 @@ void stampaInfoServizi(City &citta) {
         cout << "Servizio " << nomeServizio(i) << ": ";
         if (servizio == nullptr) {
             cout << "Non presente" << endl;
-        } else {
+        }
+        else {
             cout << "Condizione " << servizio->condizione << "%" << endl;
         }
     }
