@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "utils.hpp"
 #include <filesystem>
+#include <chrono>
 #include <iostream>
 
 #define SAVE_DIRECTORY "saves"
@@ -103,10 +104,16 @@ City createNewCity() {
         if (!isValidName(city.name)) cout << "Nome non valido. Riprova." << endl;
     } while (!isValidName(city.name));
 
+    // Prendi la data corrente
+    time_t t = time(nullptr);
+    tm* now = localtime(&t);
+
     // Imposta la data iniziale
     city.time.week = 1;
     city.time.month = 1;
-    city.time.year = 2025; // TODO: Prendere l'anno corrente (forse? può essere un'idea carina)
+    // tm_year parte dal 1900 quindi dobbiamo aggiungerlo manualmente
+    city.time.year = now->tm_year + 1900;
+
     city.mood = 100;
 
     // Genera casualmente la popolazione e il budget
