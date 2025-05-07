@@ -31,6 +31,7 @@ bool saveMenu(City &citta) {
         do {
             cout << "Scegli un'azione: ";
             cin >> scelta;
+            scelta = tolower(scelta);
 
             // Dato che "scelta" è un char dobbiamo ripulire l'input altrimenti altri caratteri come "\n" sono già nel buffer
             cin.ignore();
@@ -362,7 +363,12 @@ void riparaServizio(City &citta) {
     }
 
     // 3) Controlla il budget
-    int costo = serviceCost(servizioScelto) / 2;
+    int costo = serviceCost(servizioScelto) * ((100 - double(servizio->condizione)) / 100);
+
+    if (costo == 0) {
+        cout << "Non serve riparare il servizio. La sua condizione e' gia' al 100%." << endl;
+        return;
+    }
 
     cout << "Riparare questo servizio costa " << costo << "$." << endl;
     cout << "Il tuo budget attuale e' " << citta.budget << "$." << endl;

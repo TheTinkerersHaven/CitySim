@@ -23,13 +23,15 @@ void stampaInfoCitta(City citta) {
 
 // Chiede conferma per l'azione che si vuole effettuare (1 = Si, 0 = No) --> (1 = true, 0 = false)
 bool chiediConferma() {
-    int continuare = 0;
+    char continuare;
 
     do {
-        cout << "Vuoi continuare? (1 = Si, 0 = No): ";
+        cout << "Vuoi continuare? (S)i (N)o: ";
         cin >> continuare;
-        if (continuare != 1 && continuare != 0) cout << "Inserimento errato. Riprova." << endl;
-    } while (continuare != 1 && continuare != 0);
+        cin.ignore();
+        continuare = toupper(continuare);
+        if (continuare != 'S' && continuare != 'N') cout << "Inserimento errato. Riprova." << endl;
+    } while (continuare != 'S' && continuare != 'N');
 
-    return continuare == 1;
+    return continuare == 'S';
 }

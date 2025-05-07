@@ -50,7 +50,7 @@ int serviceCost(int type) {
         case SERVICE_POST:
             return 25'000;
         default:
-            return 0;
+            throw logic_error("Servizio non valido");
     }
 }
 
@@ -81,8 +81,18 @@ int chiediServizio(const string &messaggio) {
 }
 
 void shiftServizi(Service *services[], int dim, int index) {
-    for (int i = index; i < dim - 1; i++) {
-        services[i] = services[i + 1];
+    // Controlla se siamo alla fine dell'array
+    if (index == dim) return;
+
+    // Se siamo all'ultima posizione dell'array non abbiamo nulla da shiftare quindi mettiamo nullptr
+    if (index == dim - 1) {
+        services[index] = nullptr;
     }
-    services[dim - 1] = nullptr;
+    // Shifta verso sinistra l'elemento
+    else {
+        services[index] = services[index + 1];
+    }
+
+    // Chiamata ricorsiva con l'incremento dell'index
+    shiftServizi(services, dim, index + 1);
 }

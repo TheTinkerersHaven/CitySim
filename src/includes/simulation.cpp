@@ -76,7 +76,7 @@ int simulate(City &city) {
     }
 
     // Ogni cittadino paga .20$ alla settimana
-    city.budget += int(city.population * 0.20);
+    city.budget += int(city.population * 0.70);
 
     // Incrementa il tempo
     addWeek(city.time);
