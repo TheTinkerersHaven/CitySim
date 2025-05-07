@@ -4,5 +4,4 @@
 
 int randomNumber(int min, int max);
 void stampaInfoCitta(City citta);
-
 bool chiediConferma();
