@@ -86,7 +86,7 @@ bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate) {
     return false;
 }
 
-// 
+// Stampa le citta salvate se presenti e le opzioni del menu di salvataggio
 void stampaOpzioniMenuSalvataggio(City cities[], int dim) {
     cout << "Carica o crea una nuova citta':" << endl << endl;
 
