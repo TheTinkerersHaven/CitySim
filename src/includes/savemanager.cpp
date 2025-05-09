@@ -2,10 +2,9 @@
 #include "game.hpp"
 #include "utils.hpp"
 #include <filesystem>
-#include <chrono>
 #include <iostream>
 
-#define SAVE_DIRECTORY "saves"
+#define SAVE_DIRECTORY_NAME "saves"
 
 #define MAX_NAME_LENGTH 50
 
@@ -20,7 +19,7 @@ using namespace std;
 bool saveCity(City city) {
     // Crea il percorso in base alla cartella in cui mettere i salvataggi, e il nome della citta
     // -> saves/<name>.txt
-    ofstream file(SAVE_DIRECTORY / filesystem::path(city.name).replace_extension(".txt"));
+    ofstream file(SAVE_DIRECTORY_NAME / filesystem::path(city.name).replace_extension(".txt"));
 
     if (!file) return false;
 
@@ -76,20 +75,22 @@ bool loadCity(const string &path, City &city) {
 }
 
 bool deleteCity(City city) {
-    filesystem::path saveFile = SAVE_DIRECTORY / filesystem::path(city.name).replace_extension(".txt");
+    filesystem::path saveFile = SAVE_DIRECTORY_NAME / filesystem::path(city.name).replace_extension(".txt");
 
     return filesystem::remove(saveFile);
 }
 
 bool isValidName(const string &name) {
+    int i = 0;
     // Richiedi un nome
     if (name.empty()) return false;
     // Controlla se il nome è troppo lungo
     if (name.length() > MAX_NAME_LENGTH) return false;
 
     // Controlla che ci siano solo caratteri validi (per ora solo lettere e spazi)
-    for (int i = 0; i < name.length(); i++) {
+    while (i < name.length()) {
         if (!isalpha(name[i]) && name[i] != ' ') return false;
+        i++;
     }
 
     return true;
@@ -106,7 +107,7 @@ City createNewCity() {
 
     // Prendi la data corrente
     time_t t = time(nullptr);
-    tm* now = localtime(&t);
+    tm *now = localtime(&t);
 
     // Imposta la data iniziale
     city.time.week = 1;
@@ -130,19 +131,19 @@ City createNewCity() {
 
 int findSaves(City saves[], int capacity) {
     // Dobbiamo creare la cartella se non esiste oppure "filesystem::directory_iterator" tira un exception
-    if (!filesystem::exists(SAVE_DIRECTORY)) {
-        filesystem::create_directory(SAVE_DIRECTORY);
+    if (!filesystem::exists(SAVE_DIRECTORY_NAME)) {
+        filesystem::create_directory(SAVE_DIRECTORY_NAME);
     }
 
     int savesFound = 0;
-    bool troppiFile = false;
+    bool limiteRaggiunto = false;
 
-    for (filesystem::directory_iterator itr(SAVE_DIRECTORY); itr != filesystem::end(itr); itr++) {
+    for (filesystem::directory_iterator itr(SAVE_DIRECTORY_NAME); itr != filesystem::end(itr); itr++) {
         // Controlla se abbiamo trovato un file con estensione .txt
         if (itr->is_regular_file() && itr->path().extension() == ".txt") {
             // Controlla se abbiamo gia caricato il numero massimo di salvataggi che possiamo mettere nell'array
             if (savesFound >= capacity) {
-                troppiFile = true;
+                limiteRaggiunto = true;
             }
             // Prova a caricare il salvataggio e se va a buon fine aggiungi alla dimensione logica dell'array
             else if (loadCity(itr->path().string(), saves[savesFound])) {
@@ -155,7 +156,7 @@ int findSaves(City saves[], int capacity) {
         }
     }
 
-    if (troppiFile) {
+    if (limiteRaggiunto) {
         cerr << "Sono stati trovati più salvataggi di quelli possibili. Alcuni salvataggi non sono stati presi in considerazione." << endl;
     }
 

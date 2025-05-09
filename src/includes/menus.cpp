@@ -19,6 +19,7 @@ void ordinaCitta(int cittaSalvate, City cities[]);
 int calcolaTempoTotale(Time &time);
 void sortCityBy(City cities[], int dim, int by);
 
+// Menu di salvataggio della città
 bool saveMenu(City &citta) {
     City cities[MAX_SAVES];
     int cittaSalvate = findSaves(cities, MAX_SAVES);
@@ -68,6 +69,7 @@ bool saveMenu(City &citta) {
     return true;
 }
 
+// Controlla che l'input del menu dei salvataggi sia valido
 bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate) {
     // '0' + cittaSalvate da un il numero "cittaSalvate" come carattere
     if (scelta <= ('0' + cittaSalvate) && scelta > '0') return true;
@@ -84,6 +86,7 @@ bool sceltaMenuSalvataggiValida(char scelta, int cittaSalvate) {
     return false;
 }
 
+// 
 void stampaOpzioniMenuSalvataggio(City cities[], int dim) {
     cout << "Carica o crea una nuova citta':" << endl << endl;
 
@@ -224,6 +227,7 @@ int simulaCitta(City &citta);
 void aggiungiServizio(City &citta);
 void riparaServizio(City &citta);
 
+// Menu principale del gioco
 void gameMenu(City &citta) {
     int scelta = 0;
 
@@ -277,6 +281,7 @@ void gameMenu(City &citta) {
     } while (scelta != 0);
 }
 
+// Stampa un riepilogo dei servizi
 void stampaInfoServizi(City &citta) {
     Service *servizio = nullptr;
 
@@ -294,6 +299,7 @@ void stampaInfoServizi(City &citta) {
     }
 }
 
+// Procede di una settimana simulando gli avvenimenti nella città
 int simulaCitta(City &citta) {
     int risultatoSimulazione = simulate(citta);
 
@@ -310,6 +316,7 @@ int simulaCitta(City &citta) {
     return 0;
 }
 
+// Costruisce un servizio, con prezzi fissi
 void aggiungiServizio(City &citta) {
     // 1) Chiedi il tipo di servizio
     int servizioScelto = chiediServizio("da aggiungere");
@@ -351,6 +358,7 @@ void aggiungiServizio(City &citta) {
     cout << "Servizio aggiunto con successo!" << endl;
 }
 
+// Ripara un servizio, con prezzo variabile in base alla condizione
 void riparaServizio(City &citta) {
     // 1) Chiedi il tipo di servizio
     int servizioScelto = chiediServizio("da riparare");
@@ -394,10 +402,10 @@ void riparaServizio(City &citta) {
 
 #pragma endregion Game Menu
 
+// Richiede un input dall'utente per continuare
 void pressAnyKeyToContinue() {
     cout << "Premi qualsiasi tasto per proseguire..." << endl;
 
-    // Aspetta un input dall'utente prima di continuare
     // cin.ignore() se il buffer è vuoto aspetta un input quindi possiamo usare quello per non interferire poi con il cin della scelta
     cin.ignore();
 }

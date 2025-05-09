@@ -3,5 +3,5 @@
 #include "game.hpp"
 
 int randomNumber(int min, int max);
-void stampaInfoCitta(City citta);
+void stampaInfoCitta(City &citta);
 bool chiediConferma();

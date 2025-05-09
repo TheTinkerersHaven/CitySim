@@ -7,6 +7,7 @@ using namespace std;
 
 void shiftServizi(Service *services[], int dim, int index);
 
+// Cerca un servizio specifico nell'array dei servizi
 Service *findService(Service *services[], int dim, int type) {
     int i = 0;
 
@@ -20,6 +21,7 @@ Service *findService(Service *services[], int dim, int type) {
     return nullptr;
 }
 
+// Rimuove un servizio dall'array dei servizi
 void removeService(Service *services[], int dim, int type) {
     int i = 0;
 
@@ -39,6 +41,7 @@ void removeService(Service *services[], int dim, int type) {
     }
 }
 
+// Restituisce il costo di costruzione di un servizio
 int serviceCost(int type) {
     switch (type) {
         case SERVICE_ELECTRIC:
@@ -54,6 +57,7 @@ int serviceCost(int type) {
     }
 }
 
+// Restituisce il nome di un servizio
 string nomeServizio(int servizio) {
     switch (servizio) {
         case SERVICE_ELECTRIC:
@@ -69,6 +73,7 @@ string nomeServizio(int servizio) {
     };
 }
 
+// Richiede un numero che corrisponde a un servizio
 int chiediServizio(const string &messaggio) {
     int servizioScelto = 0;
     do {
@@ -80,6 +85,7 @@ int chiediServizio(const string &messaggio) {
     return servizioScelto;
 }
 
+// Effettua uno shift ricorsivo degli struct dei servizi nell'array omonimo
 void shiftServizi(Service *services[], int dim, int index) {
     // Controlla se siamo alla fine dell'array
     if (index == dim) return;

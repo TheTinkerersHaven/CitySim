@@ -13,22 +13,22 @@ int simulate(City &city) {
     for (int i = 0; i < MAX_SERVICES; i++) {
         Service *servizio = city.services[i];
 
-        // Controllo presenza e condizione servizi
+        // CONTROLLO PRESENZA E CONDIZIONE SERVIZI
+        // Se il servizio non è presente, riduci (-2) la felicità
         if (servizio == nullptr) {
-            // Se il servizio non è presente, riduci (-2) la felicità
             city.mood -= 2;
         }
         else {
+            // Se il servizio ha condizione minore del 40%, riduci leggermente (-1) la felicità
             if (servizio->condizione < 40) {
-                // Se il servizio ha condizione minore del 40%, riduci leggermente (-1) la felicità
                 city.mood -= 1;
             }
+            // Se il servizio è presente, invece, aumenta leggermente (+1) la felicità
             else {
-                // Se il servizio è presente, invece, aumenta leggermente (+1) la felicità
                 city.mood += 1;
             }
 
-            // Possibili disastri dei servizi
+            // POSSIBILI DISASTRI DEI SERVIZI
             // Calcolo prima per evitare situazioni in cui un impianto al 100% venga immediatamente distrutto
             double possibilita = probabilitaRischio(servizio->condizione);
 
@@ -47,18 +47,18 @@ int simulate(City &city) {
                 removeService(city.services, city.servicesCount, servizio->type);
                 city.servicesCount--;
 
-                // Riduci l'index del loop per processare il prossimo servizio che dopo la rimozione del corrente é ora allo stesso index
+                // Riduci l'index del loop per processare il prossimo servizio che, dopo la rimozione del corrente, è ora allo stesso index
                 i--;
             }
             else {
-                // Riduci la condizione del servizio
+                // Riduci la condizione del servizio, sempre evitando che vada fuori dal range 0-100%
                 servizio->condizione -= randomNumber(1, 5);
                 servizio->condizione = clamp(servizio->condizione, 0, 100);
             }
         }
     }
 
-    // Imedisci alla felicita di andare sotto lo 0% e sopra il 100%
+    // Imedisci alla felicita di andare fuori dal range 0-100%
     city.mood = clamp(city.mood, 0, 100);
 
     if (city.mood >= 75) {
@@ -75,7 +75,7 @@ int simulate(City &city) {
         return SIM_FINE_POP;
     }
 
-    // Ogni cittadino paga .20$ alla settimana
+    // Ogni cittadino paga .70$ alla settimana
     city.budget += int(city.population * 0.70);
 
     // Incrementa il tempo
@@ -84,6 +84,7 @@ int simulate(City &city) {
     return SIM_OK;
 }
 
+// Aumenta di una settimana il tempo e gestisce la progressione di mesi e anni
 void addWeek(Time &time) {
     // Aumenta di uno le settimane
     time.week += 1;
