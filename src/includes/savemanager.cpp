@@ -16,7 +16,7 @@
 
 using namespace std;
 
-bool saveCity(City city) {
+bool saveCity(City &city) {
     // Crea il percorso in base alla cartella in cui mettere i salvataggi, e il nome della citta
     // -> saves/<name>.txt
     ofstream file(SAVE_DIRECTORY_NAME / filesystem::path(city.name).replace_extension(".txt"));
@@ -74,14 +74,14 @@ bool loadCity(const string &path, City &city) {
     return true;
 }
 
-bool deleteCity(City city) {
+bool deleteCity(City &city) {
     filesystem::path saveFile = SAVE_DIRECTORY_NAME / filesystem::path(city.name).replace_extension(".txt");
 
     return filesystem::remove(saveFile);
 }
 
 bool isValidName(const string &name) {
-    int i = 0;
+    size_t i = 0;
     // Richiedi un nome
     if (name.empty()) return false;
     // Controlla se il nome è troppo lungo
